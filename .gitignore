@@ -130,3 +130,9 @@ dmypy.json
 
 # API Keys
 .ini
+
+# Test files
+homeless_crime_data.ipynb
+
+# VS Code
+.vscode
