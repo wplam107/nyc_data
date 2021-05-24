@@ -12,7 +12,7 @@ client = Socrata('data.cityofnewyork.us', TOKEN)
 
 def dt_to_string(dt):
     '''
-    Function to convert datetime to matching SoQL format
+    Function to convert datetime to matching SoQL ISO format
     '''
 
     assert type(dt) == datetime

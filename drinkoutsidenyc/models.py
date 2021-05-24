@@ -157,26 +157,15 @@ class Establishment:
             
         self.capacity += l * w * 4
 
-class LatestDate:
+class CollMetadata:
     '''
-    Latest bar/restaurant application processed
+    Collection Metadata object for last update
     '''
 
-    def __init__(self, dt):
-        self.collection = 'latestdate'
-        self.datetime = dt
+    def __init__(self, last):
+        self.collection = 'meta'
+        self._id = 'metadata'
+        self.last = last
 
     def to_dict(self):
-        return {'_id': 'date', 'datetime': self.datetime}
-
-class LastUpdate:
-    '''
-    Last database update
-    '''
-
-    def __init__(self, dt):
-        self.collection = 'lastupdate'
-        self.datetime = dt
-
-    def to_dict(self):
-        return {'_id': 'date', 'datetime': self.datetime}
+        return {'last': self.last}

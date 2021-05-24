@@ -2,7 +2,7 @@ import math
 from datetime import datetime
 
 from soql_queries import dt_to_string, before_query#, after_query
-from models import Establishment, LastUpdate, LatestDate
+from models import Establishment, CollMetadata
 
 
 ####################
@@ -26,7 +26,7 @@ def get_batches(count):
 #########################
 # Functions for loading #
 #########################
-def delete_collection(coll_ref, batch_size, total=0):
+def delete_collection(coll_ref, batch_size):
     docs = coll_ref.limit(batch_size).stream()
     deleted = 0
 
@@ -36,10 +36,7 @@ def delete_collection(coll_ref, batch_size, total=0):
         deleted = deleted + 1
 
     if deleted >= batch_size:
-        total += deleted
-        return delete_collection(coll_ref, batch_size, total)
-    else:
-        print('Total Deleted:', total)
+        return delete_collection(coll_ref, batch_size)
 
 def build_collection(db, limit=50000):
     # Query Socrata
@@ -72,3 +69,9 @@ def build_collection(db, limit=50000):
 
     print('Batches Loaded:', batch_number)
     print('Total Writes:', total)
+
+def update_meta(db):
+    last = datetime.now().isoformat()
+    doc = CollMetadata(last)
+    db.collection(doc.collection).document(doc._id).set(doc.to_dict())
+    print('Metadata Updated')

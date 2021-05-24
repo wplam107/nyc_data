@@ -2,7 +2,7 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 
-from etl_functions import delete_collection, build_collection
+from etl_functions import delete_collection, build_collection, update_meta
 
 # Use a service account
 cred = credentials.Certificate('./drinkoutsidenyc-f825926aaa1f.json')
@@ -19,6 +19,9 @@ def main():
 
     # Implicitly create collection and load data
     build_collection(db)
+
+    # Create metadata
+    update_meta(db)
 
 if __name__ == '__main__':
     main()
