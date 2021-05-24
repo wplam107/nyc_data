@@ -8,10 +8,10 @@ config = configparser.ConfigParser()
 config.read('./.ini')
 MAPS_API_KEY = config.get('GCP', 'API_KEY')
 
-# All retrieved results pass through preprocessing before data transformation
+# Preprocessing
 def preprocess(result):
     '''
-    Preprocessing function
+    Function for cleaning result
     '''
 
     establishment = {
@@ -53,8 +53,13 @@ def preprocess(result):
 # Models for Database #
 #######################
 class Establishment:
+    '''
+    Establishment object for each bar/restaurant
+    '''
+
     def __init__(self, result):
         temp = preprocess(result)
+        self.collection = 'establishments'
         for k, v in temp.items():
             setattr(self, k, v)
 
@@ -151,3 +156,27 @@ class Establishment:
             w = math.floor(w / 2)
             
         self.capacity += l * w * 4
+
+class LatestDate:
+    '''
+    Latest bar/restaurant application processed
+    '''
+
+    def __init__(self, dt):
+        self.collection = 'latestdate'
+        self.datetime = dt
+
+    def to_dict(self):
+        return {'_id': 'date', 'datetime': self.datetime}
+
+class LastUpdate:
+    '''
+    Last database update
+    '''
+
+    def __init__(self, dt):
+        self.collection = 'lastupdate'
+        self.datetime = dt
+
+    def to_dict(self):
+        return {'_id': 'date', 'datetime': self.datetime}
